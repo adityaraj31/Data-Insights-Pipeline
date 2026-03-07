@@ -24,6 +24,7 @@ function App() {
   const [error, setError] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'total_spend', direction: 'desc' });
   const [dateRange, setDateRange] = useState({ start: '', end: '' });
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,6 +87,15 @@ function App() {
     if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asc' ? -1 : 1;
     if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'asc' ? 1 : -1;
     return 0;
+  });
+
+  const filteredCustomers = sortedCustomers.filter(cust => {
+    if (!searchTerm) return true;
+    const term = searchTerm.toLowerCase();
+    return (
+      (cust.name && cust.name.toLowerCase().includes(term)) ||
+      (cust.region && cust.region.toLowerCase().includes(term))
+    );
   });
 
   const filteredRevenue = data.revenue.filter(item => {
@@ -256,7 +266,18 @@ function App() {
 
         {/* Top Customers Table */}
         <div className="card full-width">
-          <div className="card-title"><Users size={20} /> Top Customers by Spend</div>
+          <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1.5rem', gap: '1rem' }}>
+            <div className="card-title" style={{ marginBottom: 0 }}><Users size={20} /> Top Customers by Spend</div>
+            <div className="search-filter">
+              <input 
+                type="text" 
+                placeholder="Search name or region..." 
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="text-input"
+              />
+            </div>
+          </div>
           <div className="table-container">
             <table>
               <thead>
@@ -268,18 +289,26 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                {sortedCustomers.map((cust) => (
-                  <tr key={cust.customer_id}>
-                    <td style={{ fontWeight: 500 }}>{cust.name}</td>
-                    <td>{cust.region}</td>
-                    <td style={{ fontFamily: 'monospace', fontSize: '1rem' }}>{formatCurrency(cust.total_spend)}</td>
-                    <td>
-                      <span className={`badge ${cust.churned ? 'churned' : 'active'}`}>
-                        {cust.churned ? 'Churned Risk' : 'Active'}
-                      </span>
+                {filteredCustomers.length > 0 ? (
+                  filteredCustomers.map((cust) => (
+                    <tr key={cust.customer_id}>
+                      <td style={{ fontWeight: 500 }}>{cust.name}</td>
+                      <td>{cust.region}</td>
+                      <td style={{ fontFamily: 'monospace', fontSize: '1rem' }}>{formatCurrency(cust.total_spend)}</td>
+                      <td>
+                        <span className={`badge ${cust.churned ? 'churned' : 'active'}`}>
+                          {cust.churned ? 'Churned Risk' : 'Active'}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="4" style={{ textAlign: 'center', padding: '2rem' }}>
+                      No customers found matching "{searchTerm}"
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>
