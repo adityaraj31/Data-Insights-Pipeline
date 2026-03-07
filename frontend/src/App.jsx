@@ -23,6 +23,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortConfig, setSortConfig] = useState({ key: 'total_spend', direction: 'desc' });
+  const [dateRange, setDateRange] = useState({ start: '', end: '' });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +49,15 @@ function App() {
         ]);
 
         setData({ revenue, customers, categories, regions });
+        
+        if (revenue && revenue.length > 0) {
+          const sortedDates = [...revenue].sort((a,b) => a.order_year_month.localeCompare(b.order_year_month));
+          setDateRange({
+            start: sortedDates[0].order_year_month,
+            end: sortedDates[sortedDates.length - 1].order_year_month
+          });
+        }
+        
         setError(null);
       } catch (err) {
         setError(err.message || 'An unexpected error occurred while fetching data.');
@@ -76,6 +86,11 @@ function App() {
     if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asc' ? -1 : 1;
     if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'asc' ? 1 : -1;
     return 0;
+  });
+
+  const filteredRevenue = data.revenue.filter(item => {
+    if (!dateRange.start || !dateRange.end) return true;
+    return item.order_year_month >= dateRange.start && item.order_year_month <= dateRange.end;
   });
 
   if (loading) {
@@ -139,10 +154,27 @@ function App() {
         
         {/* Revenue Trend (Line Chart) */}
         <div className="card full-width">
-          <div className="card-title"><TrendingUp size={20} /> Monthly Revenue Trend</div>
+          <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', marginBottom: '1.5rem', gap: '1rem' }}>
+            <div className="card-title" style={{ marginBottom: 0 }}><TrendingUp size={20} /> Monthly Revenue Trend</div>
+            <div className="date-filter" style={{ display: 'flex', alignItems: 'center' }}>
+              <input 
+                type="month" 
+                value={dateRange.start} 
+                onChange={(e) => setDateRange(prev => ({...prev, start: e.target.value}))}
+                className="date-input"
+              />
+              <span style={{ margin: '0 0.5rem', color: 'var(--text-muted)' }}>to</span>
+              <input 
+                type="month" 
+                value={dateRange.end} 
+                onChange={(e) => setDateRange(prev => ({...prev, end: e.target.value}))}
+                className="date-input"
+              />
+            </div>
+          </div>
           <div style={{ height: 350, width: '100%' }}>
             <ResponsiveContainer>
-              <LineChart data={data.revenue} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <LineChart data={filteredRevenue} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#334155" vertical={false} />
                 <XAxis dataKey="order_year_month" stroke="#94A3B8" />
                 <YAxis 
