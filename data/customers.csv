@@ -1,0 +1,11 @@
+customer_id,name,email,region,signup_date
+C001,Alice Johnson,alice@example.com,North,2023-01-15
+C002,Bob Smith,bob@test.com,South,2023-02-20
+C003,Charlie Brown,,East,2023-03-10
+C004,David Wilson,david@example.com,West,2023-04-05
+C005,Eva Garcia,,Central,2023-05-12
+C001,Alice Johnson,alice@example.com,North,2023-01-15
+C006,Frank Miller,frank@example.com,North,2023-06-18
+C007,Grace Lee,grace@test.org,South,2023-07-22
+C008,Henry Ford,,East,2023-08-30
+C002,Bob Smith,bob@test.com,South,2023-02-20

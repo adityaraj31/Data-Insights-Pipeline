@@ -1,0 +1,8 @@
+product_id,product_name,category,unit_price
+P001,Laptop,Electronics,1200.0
+P002,Smartphone,Electronics,800.0
+P003,Coffee Maker,Appliances,50.0
+P004,Desk Chair,Furniture,150.0
+P005,Monitor,Electronics,300.0
+P006,Keyboard,Electronics,45.0
+P007,Headphones,Electronics,100.0
