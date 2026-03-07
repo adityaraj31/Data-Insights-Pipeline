@@ -1,0 +1,8 @@
+customer_id,name,region,total_spend,churned
+C005,Eva Garcia,Central,3261.4700000000003,False
+C003,Charlie Brown,East,1520.42,False
+C007,Grace Lee,South,1351.78,True
+C004,David Wilson,West,1152.35,False
+C001,Alice Johnson,North,1082.5,True
+C002,Bob Smith,South,841.31,True
+C006,Frank Miller,North,684.47,False

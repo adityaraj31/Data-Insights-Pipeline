@@ -96,25 +96,29 @@ def print_report(name, df_before, df_after, duplicates=0, dropped=0):
 def main():
     # Use script location for path resolution
     base_path = Path(__file__).parent
-    data_dir = base_path / "data"
+    raw_dir = base_path / "data" / "raw"
+    processed_dir = base_path / "data" / "processed"
+    
+    # Ensure processed directory exists
+    processed_dir.mkdir(parents=True, exist_ok=True)
     
     # Load raw data
-    cust_raw = pd.read_csv(data_dir / "customers.csv")
-    orders_raw = pd.read_csv(data_dir / "orders.csv")
+    cust_raw = pd.read_csv(raw_dir / "customers.csv")
+    orders_raw = pd.read_csv(raw_dir / "orders.csv")
     
     # Process
     cust_clean, cust_dupes = clean_customers(cust_raw)
     orders_clean, orders_dropped = clean_orders(orders_raw)
     
     # Save
-    cust_clean.to_csv(data_dir / "customers_clean.csv", index=False)
-    orders_clean.to_csv(data_dir / "orders_clean.csv", index=False)
+    cust_clean.to_csv(processed_dir / "customers_clean.csv", index=False)
+    orders_clean.to_csv(processed_dir / "orders_clean.csv", index=False)
     
     # Report
     print_report("customers.csv", cust_raw, cust_clean, duplicates=cust_dupes)
     print_report("orders.csv", orders_raw, orders_clean, dropped=orders_dropped)
     
-    print(f"\nCleaned files saved to {data_dir}")
+    print(f"\nCleaned files saved to {processed_dir}")
 
 if __name__ == "__main__":
     main()
