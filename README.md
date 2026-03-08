@@ -54,6 +54,8 @@ npm install
 
 This is designed to be an automated pipeline. When you start the backend server, it will **automatically** run `clean_data.py` and `analyze.py` to ensure the data is fresh before making the API available.
 
+> **💡 First-Time User Note**: The repository does NOT track the `data/processed/` files via Git. Your `data/processed` folder will be safely created and populated from the `data/raw/` files on the absolute very first time you boot the API! You don't need to manually delete or configure any previous dummy data to get started seamlessly.
+
 ### 1. Start the Backend API
 
 In the root directory of the project (with your Python environment active):
