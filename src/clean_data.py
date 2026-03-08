@@ -95,7 +95,7 @@ def print_report(name, df_before, df_after, duplicates=0, dropped=0):
 
 def main():
     # Use script location for path resolution
-    base_path = Path(__file__).parent
+    base_path = Path(__file__).resolve().parent.parent
     raw_dir = base_path / "data" / "raw"
     processed_dir = base_path / "data" / "processed"
     

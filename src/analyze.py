@@ -8,9 +8,10 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 # CONFIGURATION - No hardcoded file paths in the logic
+BASE_DIR = Path(__file__).resolve().parent.parent
 CONFIG = {
-    'RAW_DIR': Path('./data/raw'),
-    'PROCESSED_DIR': Path('./data/processed'),
+    'RAW_DIR': BASE_DIR / 'data' / 'raw',
+    'PROCESSED_DIR': BASE_DIR / 'data' / 'processed',
     'REQUIRED_FILES': {
         'customers': 'customers_clean.csv',
         'orders': 'orders_clean.csv',
