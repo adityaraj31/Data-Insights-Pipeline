@@ -1,5 +1,8 @@
 # Data Insights Pipeline
 
+![Dashboard Top View](assets/dashboard_top.png)
+![Dashboard Bottom View](assets/dashboard_bottom.png)
+
 A complete end-to-end data processing pipeline and interactive dashboard.
 
 This project automates the cleaning and analysis of raw CSV data (customers, orders, products) and serves the resulting business insights through a FastAPI backend to a modern React frontend dashboard.
